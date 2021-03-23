@@ -1,0 +1,150 @@
+﻿@model PagedList.IPagedList<ConsultaDadosCadastrais.Models.ConsultaProdataModel>
+@using PagedList.Mvc;
+
+
+
+<div class="grid" style="margin-left :5px" id="grid">
+
+    @if (Model != null)
+    {
+        <div class="grid">
+            <table class="table table-bordered table-responsive table-hove">
+                <thead>
+                    <tr>
+                        <th align="center">@Html.DisplayName("Nome")</th>
+                        <th align="center">@Html.DisplayName("Mãe")</th>
+                        <th align="center">@Html.DisplayName("Nascimento")</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var mdl in Model)
+                    {
+                        <tr>
+                            <td align="justify">
+                                @Ajax.ActionLink(@mdl.Nome, "CarregarDados", "Consulta", new { idUsuario = mdl.Codigo.ToString(), pagina = Session["PaginaRequisitaca"] }, new AjaxOptions
+                                {
+                                    HttpMethod = "GET",
+                                    InsertionMode = InsertionMode.Replace,
+                                    UpdateTargetId = "PostDetalle",
+                                    OnBegin = "onBeginAjax",
+                                    OnComplete = "onCompleteAjax",
+                                    OnSuccess = "onSuccessAjax",
+                                    OnFailure = "onFailureAjax"
+                                }, new { id = "IdLink", @class = "miClaseCss" })
+                            </td>
+                            <td align="justify">
+                                @mdl.Mae
+                            </td>
+                            <td align="center">
+                                @mdl.Nascimento.ToShortDateString()
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div>
+                @{
+                    if (Model.TotalItemCount > 1)
+                    {
+                        int? pag = Convert.ToInt32(@Session["Pagina"]);
+                        if (pag == 0)
+                        {
+                            pag = 1;
+                        }
+
+                        if (Convert.ToInt32(Session["PaginaRequisitaca"]) > 1)
+                        {
+                            pag = Convert.ToInt32(Session["PaginaRequisitaca"]);
+                            <td>Página @pag.ToString() de @ViewBag.Encontradas</td>
+                        }
+                        else
+                        {
+                            <td>Página @pag.ToString() de @ViewBag.Encontradas</td>
+                        }
+
+                        <br />
+                        <br />
+
+                        if (pag > 1)
+                        {
+
+
+                            @Ajax.ActionLink("< Anterior", "SelecionarPagina", "Consulta", new { pagina = pag - 1 }, new AjaxOptions
+                            {
+                                HttpMethod = "GET",
+                                InsertionMode = InsertionMode.Replace,
+                                UpdateTargetId = "PostDetalle",
+                                OnBegin = "onBeginAjax",
+                                OnComplete = "onCompleteAjax",
+                                OnSuccess = "onSuccessAjax",
+                                OnFailure = "onFailureAjax"
+                            }, new { id = "IdLink", @class = "miClaseCss" })
+
+                        }
+
+                        if (pag > 1)
+                        {
+                            <td> | | </td>
+                        }
+
+                        if (ViewBag.Encontradas > 1)
+                        {
+                            if (pag < ViewBag.Encontradas)
+                            {
+                                @Ajax.ActionLink("Próxima >", "SelecionarPagina", "Consulta", new { pagina = pag + 1 }, new AjaxOptions
+                                {
+                                    HttpMethod = "GET",
+                                    InsertionMode = InsertionMode.Replace,
+                                    UpdateTargetId = "PostDetalle",
+                                    OnBegin = "onBeginAjax",
+                                    OnComplete = "onCompleteAjax",
+                                    OnSuccess = "onSuccessAjax",
+                                    OnFailure = "onFailureAjax"
+                                }, new { id = "IdLink", @class = "miClaseCss" })
+
+                            }
+                        }
+                    }
+
+
+                }
+
+            </div>
+        </div>
+    }
+
+</div>
+
+@section scripts {
+
+    <!-- JQUERY UNOBTRUSIVE PARA Ajax.ActionLink() -->
+    @Scripts.Render("~/bundles/jqueryajax")
+
+    <!-- AL COMENZAR LA LLAMADA AJAX -->
+    <script>
+        var onBeginAjax = function () {
+            alert("Begin");
+        };
+    </script>
+
+    <!-- AL FINALIZAR LA LLAMADA AJAX -->
+    <script>
+        var onCompleteAjax = function () {
+            alert("Complete");
+        };
+    </script>
+
+    <!-- SE EJECUTA SI TODO FUE BIEN -->
+    <script>
+        var onSuccessAjax = function () {
+            alert("Success");
+        };
+    </script>
+
+    <!-- SE EJECUTA SI TODO FUE BIEN -->
+    <script>
+        var onFailureAjax = function () {
+            alert("Failure");
+        };
+    </script>
+}

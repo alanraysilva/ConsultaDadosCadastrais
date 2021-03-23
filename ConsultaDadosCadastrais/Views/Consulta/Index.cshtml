@@ -1,0 +1,70 @@
+﻿@model ConsultaDadosCadastrais.Models.ViewModels.VmConsulta
+
+@section csspersonalizado {
+   
+}
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    <h2>Consulta Dados Cadastrais</h2>
+    <h6>Usuário: @HttpContext.Current.Session["nomeUsuario"].ToString() </h6>
+
+    @using (Html.BeginForm("Pesquisar", "Consulta", FormMethod.Post))
+    {
+        //cria a tag do formulário
+        @Html.AntiForgeryToken() // previne o ataque CSRF
+        @Html.ValidationSummary(true)
+        if (@ViewBag.Message != null)
+        {
+            <div style="border:1px solid red">
+                @ViewBag.Message
+            </div>
+        }
+        <form class="form-horizontal" role="form">
+
+            <table class="table">
+                <tr>
+                    <td class="text-info"><b>Filtrar:</b></td>
+                    <td>
+                        @Html.DropDownListFor(m => m.Filtro.Tipo, new SelectList(ViewBag.Filtro.Items, "Id", "Descricao"), new { @class = "form-control form-control-custom", @style = "width:500px;" })
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-info"><b>Dados:</b></td>
+                    <td>@Html.TextBoxFor(model => model.Filtro.Dado, new { @class = "form-control form-control-custom", @style = "width:1000px;" })</td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input type="submit" id="search" title="Pesquisar" value="Pesquisar" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+
+
+
+        <div id="divResultado">
+                @{Html.RenderPartial("_PartConsulta"); }
+            
+        </div>
+
+
+
+
+    }
+</div>
+
+
+@section scripts {
+
+    <script type="text/javascript">
+            /* script para carregar as promoções */
+        $.get('@Url.Action("GetResultadoPesquisa", "Consulta")', function (data) {
+            $("#divResultado").html(data);
+            });
+    </script>
+}

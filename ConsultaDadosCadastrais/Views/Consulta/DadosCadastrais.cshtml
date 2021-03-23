@@ -1,0 +1,175 @@
+﻿@model ConsultaDadosCadastrais.Models.CadastroProdataModel
+
+@section csspersonalizado {
+
+    <link href="~/Content/print.css" rel="stylesheet">
+}
+
+@{
+    ViewBag.Title = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Dados Cadastrais</h2>
+<hr />
+<br />
+
+
+<div class="form-horizontal">
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label>@Html.LabelFor(m => m.Nome) : </label>
+            @Html.DisplayFor(m => m.Nome)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label>@Html.LabelFor(m => m.Sexo) : </label>
+            @Html.DisplayFor(m => m.Sexo)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label>@Html.LabelFor(m => m.Nascimento) : </label>
+            @Html.DisplayFor(m => m.Nascimento)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label>Estado Civil: </label>
+            @Html.DisplayFor(m => m.EstadoCivil)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label>Pai: </label>
+            @Html.DisplayFor(m => m.Pai)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label>Mãe : </label>
+            @Html.DisplayFor(m => m.Mae)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label>CPF : </label>
+            @Html.DisplayFor(m => m.Cpf)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label>RG : </label>
+            @Html.DisplayFor(m => m.Rg)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label>Nº Certidão: </label>
+            @Html.DisplayFor(m => m.Certidao)
+        </div>
+    </div>
+    <br />
+    <h3>Endereço</h3>
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label>Endereço: </label>
+            @Html.DisplayFor(m => m.Endereco.rua)
+            <label>Nº </label>
+            @Html.DisplayFor(m => m.Endereco.Numero)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label>Complemento: </label>
+            @Html.DisplayFor(m => m.Endereco.Complemento)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label>Bairro: </label>
+            @Html.DisplayFor(m => m.Endereco.Bairro)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label>Cep: </label>
+            @Html.DisplayFor(m => m.Endereco.Cep)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label>Cidade: </label>
+            @Html.DisplayFor(m => m.Endereco.Cidade)
+        </div>
+    </div>
+    <br />
+    <h3>Contato</h3>
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label>E-mail: </label>
+            @Html.DisplayFor(m => m.Email)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label>Tel. Celuar: </label>
+            @Html.DisplayFor(m => m.Celular)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label>Tel. Residêncial: </label>
+            @Html.DisplayFor(m => m.Telefone)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label>Tel. Recado: </label>
+            @Html.DisplayFor(m => m.Recado)
+        </div>
+    </div>
+</div>
+<br />
+
+
+<div class="no-print">
+    <button type="button" value="imprimir" onclick="window.print();">Imprimir</button>
+    <br />
+    <br />
+    <p>
+        @Ajax.ActionLink("Voltar", "SelecionarPagina", "Consulta", new
+        {
+            pagina = ViewBag.Pagina
+        }, new AjaxOptions
+        {
+        HttpMethod = "GET",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "PostDetalle",
+        OnBegin = "onBeginAjax",
+        OnComplete = "onCompleteAjax",
+        OnSuccess = "onSuccessAjax",
+        OnFailure = "onFailureAjax"
+        }, new { id = "IdLink", @class = "miClaseCss" })
+    </p>
+
+</div>
+
+
+
+
+
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#telefone").inputmask("mask", { "mask": "(99) 9999-99999" });
+            $("#cpf").inputmask("mask", { "mask": "999.999.999-99" }, { reverse: true });
+            $("#cep").inputmask("mask", { "mask": "99999-999" });
+            $("#nascimento").inputmask("mask", { "mask": "99/99/9999" });
+            $("#preco").inputmask("mask", { "mask": "999.999,99" }, { reverse: true });
+            $("#valor").inputmask("mask", { "mask": "#.##9,99" }, { reverse: true });
+        });
+    </script>
+}
