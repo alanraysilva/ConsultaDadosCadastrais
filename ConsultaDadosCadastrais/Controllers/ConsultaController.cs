@@ -23,7 +23,7 @@ namespace ConsultaDadosCadastrais.Controllers
             ClaimsModel claimsModel = new ClaimsModel();
             claimsModel = Session["Claims"] as ClaimsModel;
             Session["nomeUsuario"] = claimsModel.UserName;
-            //TESTE
+            //OK
             return View();
                         
         }
